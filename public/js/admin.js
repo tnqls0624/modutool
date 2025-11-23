@@ -396,7 +396,8 @@ async function loadTools() {
     `;
     
     try {
-        const response = await fetch('tables/ai_tools?limit=100');
+        // Cloudflare D1 + Hono API 연동
+        const response = await fetch('/tables/ai_tools?limit=100');
         
         if (!response.ok) {
             throw new Error('데이터 로드 실패');

@@ -29,7 +29,7 @@ function loadFirebaseConfigFromStorage() {
     
     // 기본 설정 (수동으로 입력한 경우)
     return {
-        apiKey: "AIzaSyBXJZ1xXxXxXxXxXxXxXxXxXxXxXxX",
+        apiKey: "AIzaSyCYRaabK56E2tbtbc0ZgCeetp4Seov6QEI",
         authDomain: "modutool-4179c.firebaseapp.com",
         projectId: "modutool-4179c",
         storageBucket: "modutool-4179c.firebasestorage.app",

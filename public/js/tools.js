@@ -304,7 +304,7 @@ let filteredTools = [...aiTools];
 // 데이터베이스에서 툴 로드
 async function loadToolsFromDB() {
     try {
-        const response = await fetch('tables/ai_tools?limit=100');
+        const response = await fetch('/tables/ai_tools?limit=100');
         
         if (response.ok) {
             const result = await response.json();
@@ -711,3 +711,6 @@ function activateSidebarCategory(category) {
         }
     });
 }
+
+// 전역으로 aiTools 공유 (admin.js에서 사용)
+window.aiTools = aiTools;

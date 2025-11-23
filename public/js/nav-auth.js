@@ -61,6 +61,9 @@ function updateAuthUI(user) {
     } else {
         // 로그아웃된 상태
         navCta.innerHTML = `
+            <a href="admin.html" class="btn btn-primary btn-sm" style="margin-right: 8px;">
+                <i class="fas fa-cog"></i> 관리자
+            </a>
             <a href="auth.html" class="btn btn-secondary btn-sm" style="margin-right: 8px;">
                 <i class="fas fa-sign-in-alt"></i> 로그인
             </a>

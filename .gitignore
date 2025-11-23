@@ -64,6 +64,15 @@ node_modules/
 
 # dotenv environment variables file
 .env
+.dev.vars
 
 # dataconnect generated files
 .dataconnect
+
+# Wrangler
+.wrangler/
+dist/
+
+# PM2
+ecosystem.config.cjs
+.pm2/

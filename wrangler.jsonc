@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "modutool",
+  "compatibility_date": "2024-01-01",
+  "pages_build_output_dir": "./dist",
+  "compatibility_flags": ["nodejs_compat"],
+  
+  // D1 Database 설정
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "modutool-production",
+      "database_id": "ca7be345-6ca5-4c2e-88e1-6f309d567314"
+    }
+  ]
+}
