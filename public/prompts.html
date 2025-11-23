@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="검증된 AI 프롬프트 모음. Midjourney, ChatGPT, Claude, Runway, Pika 프롬프트를 무료로 사용하세요.">
+    <title>AI 프롬프트 모음 - MODUTOOL</title>
+    
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="images/modutool-logo-white-header.svg" alt="MODUTOOL 로고">
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">AI 툴 찾기</a></li>
+                <li><a href="prompts.html" style="color: #425CFF;">프롬프트</a></li>
+                <li><a href="blog.html">가이드</a></li>
+
+            </ul>
+            
+            <div class="nav-cta">
+                <a href="admin.html" class="btn btn-secondary btn-sm" style="margin-right: 8px;">
+                    <i class="fas fa-tools"></i> 관리자
+                </a>
+                <a href="index.html" class="btn btn-primary btn-sm">AI 툴 탐색</a>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, #0C0F14 0%, #1a1f2e 100%); padding: 80px 0 60px; color: white;">
+        <div class="container">
+            <h1 style="font-size: 3rem; margin-bottom: 16px; color: white;">✨ AI 프롬프트 모음</h1>
+            <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0;">
+                검증된 프롬프트로 AI 툴을 더 효과적으로 활용하세요
+            </p>
+        </div>
+    </section>
+
+    <!-- 탭 메뉴 -->
+    <section style="background: var(--bg-secondary); padding: 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 72px; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; gap: 8px; overflow-x: auto; padding: 16px 0;">
+                <button class="prompt-tab active" data-category="all">
+                    <i class="fas fa-star"></i> 전체
+                </button>
+                <button class="prompt-tab" data-category="midjourney">
+                    <span style="font-size: 1.2rem;">🎨</span> Midjourney
+                </button>
+                <button class="prompt-tab" data-category="chatgpt">
+                    <span style="font-size: 1.2rem;">💬</span> ChatGPT
+                </button>
+                <button class="prompt-tab" data-category="claude">
+                    <span style="font-size: 1.2rem;">🤖</span> Claude
+                </button>
+                <button class="prompt-tab" data-category="runway">
+                    <span style="font-size: 1.2rem;">🎬</span> Runway
+                </button>
+                <button class="prompt-tab" data-category="pika">
+                    <span style="font-size: 1.2rem;">🎞️</span> Pika
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 프롬프트 리스트 -->
+    <section class="section" style="background: #F7F8FA;">
+        <div class="container">
+            <div id="promptsGrid" class="grid grid-2">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div style="margin-bottom: 16px;">
+                        <img src="images/modutool-logo-white.svg" alt="MODUTOOL 로고" style="height: 32px; width: auto;">
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                        최고의 AI 툴을 한눈에 비교하고<br>
+                        생산성을 극대화하세요.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>서비스</h4>
+                    <ul>
+                        <li><a href="index.html">AI 툴 찾기</a></li>
+                        <li><a href="prompts.html">프롬프트 모음</a></li>
+                        <li><a href="blog.html">가이드 & 블로그</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>카테고리</h4>
+                    <ul>
+                        <li><a href="index.html?category=image">이미지 생성 AI</a></li>
+                        <li><a href="index.html?category=video">영상 생성 AI</a></li>
+                        <li><a href="index.html?category=writing">문서 작성 AI</a></li>
+                        <li><a href="index.html?category=coding">개발/코딩 AI</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>문의</h4>
+                    <ul>
+                        <li><a href="mailto:contact@airesearch.io">📧 contact@airesearch.io</a></li>
+                        <li><a href="mailto:ads@airesearch.io">💼 광고/제휴 문의</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MODUTOOL. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/prompts.js"></script>
+    
+    <style>
+        .prompt-tab {
+            padding: 12px 24px;
+            border: 1.5px solid #E4E6EB;
+            background: white;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            color: #5F6369;
+            font-family: var(--font-kr);
+        }
+        
+        .prompt-tab:hover {
+            border-color: #425CFF;
+            background: #F7F8FA;
+            color: #425CFF;
+        }
+        
+        .prompt-tab.active {
+            background: #425CFF;
+            border-color: #425CFF;
+            color: white;
+        }
+    </style>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Navigation Auth UI -->
+    <script src="js/nav-auth.js"></script>
+</body>
+</html>

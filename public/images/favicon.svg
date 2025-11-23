@@ -1,0 +1,14 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favicon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5B4CFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7B6CFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4B3CFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Blob shape -->
+  <path d="M 14 12 Q 20 8, 26 12 Q 34 16, 34 24 Q 34 32, 26 36 Q 20 40, 14 36 Q 6 32, 6 24 Q 6 16, 14 12 Z" 
+        fill="url(#favicon-gradient)" 
+        opacity="0.9"/>
+</svg>

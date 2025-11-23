@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MODUTOOL - 다양한 AI 툴을 카테고리별로 비교하고 필터링하여 찾아보세요. 무료/유료, 난이도, 한국어 지원 여부로 검색할 수 있습니다.">
+    <title>MODUTOOL - 최고의 AI 툴을 한눈에</title>
+    
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* 사이드바 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 32px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-sticky {
+            position: sticky;
+            top: 156px; /* nav(72px) + filter(84px) */
+        }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E4E6EB;
+            padding: 24px;
+        }
+        
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #0C0F14;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 6px;
+            border: 2px solid transparent;
+        }
+        
+        .category-item:hover {
+            background: #F7F8FA;
+            border-color: #E4E6EB;
+        }
+        
+        .category-item.active {
+            background: rgba(66, 92, 255, 0.1);
+            border-color: #425CFF;
+            color: #425CFF;
+        }
+        
+        .category-icon {
+            font-size: 1.5rem;
+        }
+        
+        .category-name {
+            flex: 1;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .category-count {
+            font-size: 0.85rem;
+            color: #9199A1;
+            background: #F7F8FA;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        
+        .category-item.active .category-count {
+            background: rgba(66, 92, 255, 0.15);
+            color: #425CFF;
+        }
+        
+        /* 메인 콘텐츠 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .sidebar-sticky {
+                position: static;
+            }
+            
+            .sidebar-card {
+                margin-bottom: 24px;
+                border: none;
+                background: transparent;
+                padding: 0;
+            }
+            
+            .sidebar-title {
+                display: none;
+            }
+            
+            #categoryList {
+                display: flex;
+                gap: 10px;
+                overflow-x: auto;
+                padding: 12px 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                scroll-snap-type: x proximity;
+            }
+            
+            #categoryList::-webkit-scrollbar {
+                display: none;
+            }
+            
+            /* 스크롤 그라데이션 힌트 */
+            .sidebar::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 40px;
+                background: linear-gradient(to left, #F7F8FA, transparent);
+                pointer-events: none;
+            }
+            
+            .category-item {
+                flex-shrink: 0;
+                padding: 10px 16px;
+                white-space: nowrap;
+                scroll-snap-align: start;
+            }
+            
+            .category-count {
+                display: inline-block;
+            }
+            
+            .category-icon {
+                font-size: 1.3rem;
+            }
+            
+            .category-name {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 가격 필터 탭 스타일 */
+        .price-tabs {
+            display: flex;
+            gap: 8px;
+            background: #F7F8FA;
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid #E4E6EB;
+        }
+        
+        .price-tab {
+            position: relative;
+        }
+        
+        .price-tab input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .price-tab label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #5F6369;
+            white-space: nowrap;
+            user-select: none;
+        }
+        
+        .price-tab input[type="radio"]:checked + label {
+            background: white;
+            color: #425CFF;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .price-tab label:hover {
+            color: #425CFF;
+        }
+        
+        @media (max-width: 768px) {
+            .price-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .price-tab label {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="images/modutool-logo-white-header.svg" alt="MODUTOOL 로고">
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" style="color: #425CFF;">AI 툴 찾기</a></li>
+                <li><a href="prompts.html">프롬프트</a></li>
+                <li><a href="blog.html">가이드</a></li>
+
+            </ul>
+            
+            <div class="nav-cta">
+                <a href="admin.html" class="btn btn-secondary btn-sm" style="margin-right: 8px;">
+                    <i class="fas fa-tools"></i> 관리자
+                </a>
+
+            </div>
+            
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, #0C0F14 0%, #1a1f2e 100%); padding: 60px 0 40px; color: white;">
+        <div class="container">
+            <h1 style="font-size: 2.5rem; margin-bottom: 12px; color: white;">🤖 최고의 AI 툴을 한눈에</h1>
+            <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0;">
+                이미지 생성부터 업무 자동화까지, 당신에게 필요한 AI 툴을 찾아보세요
+            </p>
+        </div>
+    </section>
+
+    <!-- 필터 & 검색 섹션 -->
+    <section style="background: var(--bg-secondary); padding: 24px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 72px; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                <!-- 검색 -->
+                <div style="flex: 1; min-width: 280px;">
+                    <input type="text" id="searchInput" placeholder="🔍 AI 툴 검색..." style="width: 100%; padding: 12px 16px; border: 1.5px solid #E4E6EB; border-radius: 12px; font-size: 0.95rem;">
+                </div>
+                
+                <!-- 가격 필터 탭 -->
+                <div class="price-tabs">
+                    <div class="price-tab">
+                        <input type="radio" id="price-all" name="priceFilter" value="all" checked>
+                        <label for="price-all">
+                            <i class="fas fa-star"></i>
+                            전체
+                        </label>
+                    </div>
+                    <div class="price-tab">
+                        <input type="radio" id="price-free" name="priceFilter" value="free">
+                        <label for="price-free">
+                            <i class="fas fa-gift"></i>
+                            무료
+                        </label>
+                    </div>
+                    <div class="price-tab">
+                        <input type="radio" id="price-freemium" name="priceFilter" value="freemium">
+                        <label for="price-freemium">
+                            <i class="fas fa-fire"></i>
+                            무료체험
+                        </label>
+                    </div>
+                    <div class="price-tab">
+                        <input type="radio" id="price-paid" name="priceFilter" value="paid">
+                        <label for="price-paid">
+                            <i class="fas fa-crown"></i>
+                            유료
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 한국어 지원 -->
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 16px; background: #F7F8FA; border-radius: 12px; border: 1px solid #E4E6EB; transition: all 0.3s;">
+                    <input type="checkbox" id="koreanFilter" style="width: 18px; height: 18px; cursor: pointer;">
+                    <span style="font-size: 0.95rem; font-weight: 500;">🇰🇷 한국어</span>
+                </label>
+                
+                <!-- 초기화 버튼 -->
+                <button id="resetFilters" class="btn btn-ghost btn-sm">
+                    <i class="fas fa-redo"></i> 초기화
+                </button>
+            </div>
+            
+            <!-- 필터 결과 표시 -->
+            <div id="filterResult" style="margin-top: 12px; font-size: 0.9rem; color: #5F6369; font-weight: 500;"></div>
+        </div>
+    </section>
+
+    <!-- 메인 레이아웃 -->
+    <section style="background: #F7F8FA; padding: 40px 0;">
+        <div class="main-layout">
+            <!-- 좌측 사이드바 (카테고리) -->
+            <aside class="sidebar">
+                <div class="sidebar-sticky">
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">
+                            <i class="fas fa-th-large"></i>
+                            카테고리
+                        </div>
+                        
+                        <div id="categoryList">
+                            <div class="category-item active" data-category="all">
+                                <span class="category-icon">⭐</span>
+                                <span class="category-name">전체</span>
+                                <span class="category-count" id="count-all">25</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="image">
+                                <span class="category-icon">🎨</span>
+                                <span class="category-name">이미지 생성</span>
+                                <span class="category-count" id="count-image">3</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="video">
+                                <span class="category-icon">🎬</span>
+                                <span class="category-name">영상 생성</span>
+                                <span class="category-count" id="count-video">3</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="voice">
+                                <span class="category-icon">🎤</span>
+                                <span class="category-name">음성/더빙</span>
+                                <span class="category-count" id="count-voice">2</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="writing">
+                                <span class="category-icon">📝</span>
+                                <span class="category-name">문서 작성</span>
+                                <span class="category-count" id="count-writing">4</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="automation">
+                                <span class="category-icon">⚡</span>
+                                <span class="category-name">업무 자동화</span>
+                                <span class="category-count" id="count-automation">2</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="coding">
+                                <span class="category-icon">💻</span>
+                                <span class="category-name">개발/코딩</span>
+                                <span class="category-count" id="count-coding">3</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="marketing">
+                                <span class="category-icon">📊</span>
+                                <span class="category-name">마케팅/SEO</span>
+                                <span class="category-count" id="count-marketing">2</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="design">
+                                <span class="category-icon">✨</span>
+                                <span class="category-name">디자인</span>
+                                <span class="category-count" id="count-design">3</span>
+                            </div>
+                            
+                            <div class="category-item" data-category="translation">
+                                <span class="category-icon">🌐</span>
+                                <span class="category-name">번역/언어</span>
+                                <span class="category-count" id="count-translation">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- 우측 메인 콘텐츠 (AI 툴 리스트) -->
+            <main class="main-content">
+                <div id="toolsGrid" class="grid grid-3"></div>
+                
+                <!-- 결과 없음 메시지 -->
+                <div id="noResults" style="display: none; text-align: center; padding: 80px 20px;">
+                    <div style="font-size: 80px; margin-bottom: 24px;">🔍</div>
+                    <h3 style="margin-bottom: 12px; color: #0C0F14;">검색 결과가 없습니다</h3>
+                    <p style="color: #5F6369; margin-bottom: 24px;">다른 검색어나 필터를 사용해보세요</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('resetFilters').click()">
+                        필터 초기화
+                    </button>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- CTA 섹션 -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div style="margin-bottom: 16px;">
+                        <img src="images/modutool-logo-white.svg" alt="MODUTOOL 로고" style="height: 32px; width: auto;">
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                        최고의 AI 툴을 한눈에 비교하고<br>
+                        생산성을 극대화하세요.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>서비스</h4>
+                    <ul>
+                        <li><a href="index.html">AI 툴 찾기</a></li>
+                        <li><a href="prompts.html">프롬프트 모음</a></li>
+                        <li><a href="blog.html">가이드 & 블로그</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>인기 카테고리</h4>
+                    <ul>
+                        <li><a href="index.html?category=image">이미지 생성 AI</a></li>
+                        <li><a href="index.html?category=video">영상 생성 AI</a></li>
+                        <li><a href="index.html?category=writing">문서 작성 AI</a></li>
+                        <li><a href="index.html?category=coding">개발/코딩 AI</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>문의</h4>
+                    <ul>
+                        <li><a href="mailto:contact@airesearch.io">📧 contact@airesearch.io</a></li>
+                        <li><a href="mailto:ads@airesearch.io">💼 광고/제휴 문의</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MODUTOOL. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Navigation Auth UI -->
+    <script src="js/nav-auth.js"></script>
+    
+    <!-- Bookmark Manager -->
+    <script src="js/bookmark-manager.js"></script>
+    
+    <script src="js/main.js"></script>
+    <script src="js/tools.js"></script>
+</body>
+</html>

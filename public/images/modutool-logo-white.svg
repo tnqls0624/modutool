@@ -1,0 +1,26 @@
+<svg width="300" height="50" viewBox="0 0 300 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blobGradientWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7B6CFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#5B4CFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4B3CFF;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glowWhite" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- MODUT -->
+  <text x="10" y="35" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="800" fill="#FFFFFF" letter-spacing="2">MODUT</text>
+  
+  <!-- Blue Blob with Glow -->
+  <ellipse cx="165" cy="25" rx="18" ry="20" fill="url(#blobGradientWhite)" filter="url(#glowWhite)" opacity="1"/>
+  
+  <!-- OL -->
+  <text x="190" y="35" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="800" fill="#FFFFFF" letter-spacing="2">OL</text>
+</svg>

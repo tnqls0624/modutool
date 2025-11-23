@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI 툴 활용 가이드와 최신 뉴스. 생산성을 높이는 AI 사용법을 배워보세요.">
+    <title>AI 가이드 & 블로그 - MODUTOOL</title>
+    
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="images/modutool-logo-white-header.svg" alt="MODUTOOL 로고">
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">AI 툴 찾기</a></li>
+                <li><a href="prompts.html">프롬프트</a></li>
+                <li><a href="blog.html" style="color: #425CFF;">가이드</a></li>
+
+            </ul>
+            
+            <div class="nav-cta">
+                <a href="admin.html" class="btn btn-secondary btn-sm" style="margin-right: 8px;">
+                    <i class="fas fa-tools"></i> 관리자
+                </a>
+                <a href="index.html" class="btn btn-primary btn-sm">AI 툴 탐색</a>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, #0C0F14 0%, #1a1f2e 100%); padding: 80px 0 60px; color: white;">
+        <div class="container">
+            <h1 style="font-size: 3rem; margin-bottom: 16px; color: white;">📚 AI 가이드 & 블로그</h1>
+            <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0;">
+                AI 툴을 더 잘 활용하는 방법과 최신 소식을 확인하세요
+            </p>
+        </div>
+    </section>
+
+    <!-- 필터 탭 -->
+    <section style="background: var(--bg-secondary); padding: 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 72px; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; gap: 8px; overflow-x: auto; padding: 16px 0;">
+                <button class="blog-tab active" data-category="all">
+                    <i class="fas fa-star"></i> 전체
+                </button>
+                <button class="blog-tab" data-category="guide">
+                    <i class="fas fa-book"></i> 가이드
+                </button>
+                <button class="blog-tab" data-category="tutorial">
+                    <i class="fas fa-graduation-cap"></i> 튜토리얼
+                </button>
+                <button class="blog-tab" data-category="news">
+                    <i class="fas fa-newspaper"></i> 뉴스
+                </button>
+                <button class="blog-tab" data-category="review">
+                    <i class="fas fa-star-half-alt"></i> 리뷰
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Post -->
+    <section class="section-sm">
+        <div class="container">
+            <div class="card" style="overflow: hidden; border: none; box-shadow: var(--shadow-lg);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
+                    <!-- 이미지 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 400px; display: flex; align-items: center; justify-content: center; font-size: 120px;">
+                        🚀
+                    </div>
+                    
+                    <!-- 콘텐츠 -->
+                    <div style="padding: 48px;">
+                        <span class="tag tag-neon" style="margin-bottom: 16px; display: inline-block;">Featured</span>
+                        <h2 style="font-size: 2rem; margin-bottom: 16px;">2024년 필수 AI 툴 TOP 10</h2>
+                        <p style="font-size: 1.05rem; line-height: 1.7; color: #5F6369; margin-bottom: 24px;">
+                            생산성을 극대화하는 최고의 AI 툴들을 비교 분석했습니다. 
+                            각 카테고리별 최고의 도구와 실제 사용 사례를 확인해보세요.
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; color: #5F6369; font-size: 0.9rem;">
+                            <span><i class="fas fa-calendar"></i> 2024.01.15</span>
+                            <span><i class="fas fa-clock"></i> 10분 읽기</span>
+                            <span><i class="fas fa-eye"></i> 12,450 views</span>
+                        </div>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-arrow-right"></i> 읽어보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="section" style="background: #F7F8FA;">
+        <div class="container">
+            <div id="blogGrid" class="grid grid-3">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+            
+            <!-- Load More -->
+            <div style="text-align: center; margin-top: 48px;">
+                <button class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> 더 보기
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div style="margin-bottom: 16px;">
+                        <img src="images/modutool-logo-white.svg" alt="MODUTOOL 로고" style="height: 32px; width: auto;">
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                        최고의 AI 툴을 한눈에 비교하고<br>
+                        생산성을 극대화하세요.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>서비스</h4>
+                    <ul>
+                        <li><a href="index.html">AI 툴 찾기</a></li>
+                        <li><a href="prompts.html">프롬프트 모음</a></li>
+                        <li><a href="blog.html">가이드 & 블로그</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>카테고리</h4>
+                    <ul>
+                        <li><a href="index.html?category=image">이미지 생성 AI</a></li>
+                        <li><a href="index.html?category=video">영상 생성 AI</a></li>
+                        <li><a href="index.html?category=writing">문서 작성 AI</a></li>
+                        <li><a href="index.html?category=coding">개발/코딩 AI</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>문의</h4>
+                    <ul>
+                        <li><a href="mailto:contact@airesearch.io">📧 contact@airesearch.io</a></li>
+                        <li><a href="mailto:ads@airesearch.io">💼 광고/제휴 문의</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MODUTOOL. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/blog.js"></script>
+    
+    <style>
+        .blog-tab {
+            padding: 12px 24px;
+            border: 1.5px solid #E4E6EB;
+            background: white;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            color: #5F6369;
+            font-family: var(--font-kr);
+        }
+        
+        .blog-tab:hover {
+            border-color: #425CFF;
+            background: #F7F8FA;
+            color: #425CFF;
+        }
+        
+        .blog-tab.active {
+            background: #425CFF;
+            border-color: #425CFF;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .card > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Navigation Auth UI -->
+    <script src="js/nav-auth.js"></script>
+</body>
+</html>

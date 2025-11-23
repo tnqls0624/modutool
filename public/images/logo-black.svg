@@ -1,0 +1,33 @@
+<svg width="240" height="40" viewBox="0 0 240 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- M -->
+  <path d="M 5 32 L 5 8 L 12 18 L 19 8 L 19 32 L 15 32 L 15 16 L 12 23 L 9 16 L 9 32 Z" fill="#000000"/>
+  
+  <!-- O -->
+  <path d="M 26 8 C 22 8 19 11 19 15 L 19 25 C 19 29 22 32 26 32 C 30 32 33 29 33 25 L 33 15 C 33 11 30 8 26 8 Z M 26 12 C 28 12 29 13 29 15 L 29 25 C 29 27 28 28 26 28 C 24 28 23 27 23 25 L 23 15 C 23 13 24 12 26 12 Z" fill="#000000"/>
+  
+  <!-- D -->
+  <path d="M 38 32 L 38 8 L 45 8 C 49 8 52 11 52 15 L 52 25 C 52 29 49 32 45 32 Z M 42 12 L 42 28 L 45 28 C 47 28 48 27 48 25 L 48 15 C 48 13 47 12 45 12 Z" fill="#000000"/>
+  
+  <!-- U -->
+  <path d="M 57 8 L 57 25 C 57 27 58 28 60 28 C 62 28 63 27 63 25 L 63 8 L 67 8 L 67 25 C 67 29 64 32 60 32 C 56 32 53 29 53 25 L 53 8 Z" fill="#000000"/>
+  
+  <!-- T -->
+  <path d="M 72 8 L 72 12 L 76 12 L 76 32 L 80 32 L 80 12 L 84 12 L 84 8 Z" fill="#000000"/>
+  
+  <!-- Blue Blob -->
+  <defs>
+    <linearGradient id="blob-black" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B5FFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#5B4FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4B3FFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <ellipse cx="95" cy="20" rx="12" ry="14" fill="url(#blob-black)" opacity="0.95"/>
+  
+  <!-- O -->
+  <path d="M 110 8 C 106 8 103 11 103 15 L 103 25 C 103 29 106 32 110 32 C 114 32 117 29 117 25 L 117 15 C 117 11 114 8 110 8 Z M 110 12 C 112 12 113 13 113 15 L 113 25 C 113 27 112 28 110 28 C 108 28 107 27 107 25 L 107 15 C 107 13 108 12 110 12 Z" fill="#000000"/>
+  
+  <!-- L -->
+  <path d="M 122 8 L 122 32 L 135 32 L 135 28 L 126 28 L 126 8 Z" fill="#000000"/>
+</svg>

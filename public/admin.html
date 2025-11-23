@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 툴 관리 - MODUTOOL Admin</title>
+    
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #0C0F14 0%, #1a1f2e 100%);
+            padding: 40px 0;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #E4E6EB;
+            padding-bottom: 0;
+        }
+        
+        .admin-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #5F6369;
+            transition: all 0.3s ease;
+            font-family: var(--font-kr);
+        }
+        
+        .admin-tab:hover {
+            color: #425CFF;
+        }
+        
+        .admin-tab.active {
+            color: #425CFF;
+            border-bottom-color: #425CFF;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0C0F14;
+            font-size: 0.95rem;
+        }
+        
+        .form-label .required {
+            color: #EF4444;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #E4E6EB;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: var(--font-kr);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #425CFF;
+            box-shadow: 0 0 0 3px rgba(66, 92, 255, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: white;
+            border: 2px solid #E4E6EB;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .form-checkbox:hover {
+            border-color: #425CFF;
+            background: rgba(66, 92, 255, 0.05);
+        }
+        
+        .form-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #425CFF;
+        }
+        
+        .form-checkbox input:checked + span {
+            color: #425CFF;
+            font-weight: 600;
+        }
+        
+        .form-checkbox input:checked {
+            border-color: #425CFF;
+        }
+        
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #425CFF, #5a6fff);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .array-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .array-input input {
+            flex: 1;
+        }
+        
+        .btn-add {
+            padding: 8px 16px;
+            background: #10B981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add:hover {
+            background: #059669;
+        }
+        
+        .btn-remove {
+            padding: 8px 12px;
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .btn-remove:hover {
+            background: #DC2626;
+        }
+        
+        .array-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .array-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #F7F8FA;
+            border-radius: 8px;
+        }
+        
+        .array-item span {
+            flex: 1;
+        }
+        
+        .tools-table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .tools-table thead {
+            background: #F7F8FA;
+        }
+        
+        .tools-table th,
+        .tools-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #E4E6EB;
+        }
+        
+        .tools-table th {
+            font-weight: 600;
+            color: #0C0F14;
+        }
+        
+        .tools-table tr:hover {
+            background: #F7F8FA;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+        
+        .status-draft {
+            background: rgba(255, 187, 0, 0.1);
+            color: #FFBB00;
+        }
+        
+        .btn-edit {
+            padding: 6px 12px;
+            background: #425CFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        
+        .btn-edit:hover {
+            background: #3347E6;
+        }
+        
+        .btn-delete {
+            padding: 6px 12px;
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+        
+        .btn-delete:hover {
+            background: #DC2626;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #9199A1;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        /* 가격 플랜 카드 */
+        .pricing-plan-card {
+            background: white;
+            border: 2px solid #E4E6EB;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-plan-card.featured {
+            border-color: #425CFF;
+            background: linear-gradient(135deg, rgba(66, 92, 255, 0.05), rgba(72, 255, 217, 0.05));
+        }
+        
+        .pricing-plan-card .featured-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(135deg, #425CFF, #5a6fff);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .pricing-plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-plan-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0C0F14;
+            margin-bottom: 4px;
+        }
+        
+        .pricing-plan-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #425CFF;
+            margin-bottom: 2px;
+        }
+        
+        .pricing-plan-period {
+            font-size: 0.85rem;
+            color: #5F6369;
+        }
+        
+        .pricing-plan-desc {
+            color: #5F6369;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        .pricing-plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+        
+        .pricing-plan-features li {
+            padding: 6px 0;
+            color: #0C0F14;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pricing-plan-features li:before {
+            content: '✓';
+            color: #10B981;
+            font-weight: bold;
+        }
+        
+        .plan-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tools-table {
+                font-size: 0.85rem;
+            }
+            
+            .tools-table th,
+            .tools-table td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="images/modutool-logo-white-header.svg" alt="MODUTOOL 로고">
+                </div>
+                <span>Admin</span>
+            </a>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">메인으로</a></li>
+                <li><a href="admin.html" style="color: #425CFF;">관리자</a></li>
+            </ul>
+            
+            <div class="nav-cta">
+                <a href="index.html" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-home"></i> 홈
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <h1 style="font-size: 2.5rem; margin-bottom: 12px; color: white;">
+                <i class="fas fa-tools"></i> AI 툴 관리
+            </h1>
+            <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0;">
+                AI 툴을 등록하고 관리할 수 있습니다
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div class="admin-container">
+        
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-section="add">
+                <i class="fas fa-plus-circle"></i> 새 툴 추가
+            </button>
+            <button class="admin-tab" data-section="list">
+                <i class="fas fa-list"></i> 툴 목록
+            </button>
+            <button class="admin-tab" data-section="settings">
+                <i class="fas fa-cog"></i> 설정
+            </button>
+        </div>
+        
+        <!-- Add Tool Section -->
+        <section id="add" class="admin-section active">
+            <div class="card" style="max-width: 1200px; margin: 0 auto;">
+                <div class="card-body" style="padding: 40px;">
+                    <h2 style="margin-bottom: 32px;">
+                        <i class="fas fa-plus-circle"></i> 새 AI 툴 추가
+                    </h2>
+                    
+                    <form id="addToolForm" onsubmit="handleAddTool(event)">
+                        <div class="form-grid">
+                            <!-- 기본 정보 -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    툴 ID <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(영문, 소문자, 하이픈)</small>
+                                </label>
+                                <input type="text" name="id" class="form-input" placeholder="예: chatgpt, midjourney" required pattern="[a-z0-9-]+">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">툴 이름 <span class="required">*</span></label>
+                                <input type="text" name="name" class="form-input" placeholder="예: ChatGPT" required>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    아이콘 <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(이미지 파일, URL 또는 이모지)</small>
+                                </label>
+                                
+                                <!-- 파일 업로드 또는 URL 입력 -->
+                                <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                                    <input type="file" id="iconFile" accept="image/*" class="form-input" style="flex: 1;" onchange="handleIconUpload(event)">
+                                    <button type="button" class="btn btn-secondary" onclick="toggleIconInput()" style="white-space: nowrap;">
+                                        <i class="fas fa-link"></i> URL 입력
+                                    </button>
+                                </div>
+                                
+                                <!-- URL 입력 필드 (숨김 상태) -->
+                                <div id="iconUrlInput" style="display: none; margin-bottom: 12px;">
+                                    <input type="text" id="iconUrl" class="form-input" placeholder="https://example.com/logo.png 또는 💬">
+                                    <button type="button" class="btn btn-secondary" onclick="useIconUrl()" style="margin-top: 8px;">
+                                        <i class="fas fa-check"></i> URL 사용
+                                    </button>
+                                </div>
+                                
+                                <!-- 숨겨진 실제 input (DB 저장용) -->
+                                <input type="hidden" name="icon" id="iconValue" required>
+                                
+                                <!-- 미리보기 -->
+                                <div id="iconPreview" style="margin-top: 12px; padding: 16px; background: #F7F8FA; border-radius: 12px; display: none; align-items: center; gap: 16px;">
+                                    <div id="iconPreviewImage" style="width: 80px; height: 80px; background: linear-gradient(135deg, #425CFF, #5a6fff); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #0C0F14; margin-bottom: 4px;">미리보기</div>
+                                        <div id="iconPreviewText" style="font-size: 0.85rem; color: #5F6369;"></div>
+                                    </div>
+                                    <button type="button" class="btn-remove" onclick="clearIcon()">
+                                        <i class="fas fa-times"></i> 제거
+                                    </button>
+                                </div>
+                                
+                                <small style="color: #5F6369; display: block; margin-top: 8px;">
+                                    💡 <strong>파일 업로드:</strong> PNG, JPG, SVG (권장: 512x512px, 100KB 이하)<br>
+                                    💡 <strong>URL 입력:</strong> 외부 이미지 링크 또는 이모지 (💬)
+                                </small>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    카테고리 <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(여러 개 선택 가능)</small>
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px; background: #F7F8FA; border-radius: 12px; border: 1px solid #E4E6EB;">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="image" onchange="updateSelectedCategories()">
+                                        <span>🎨 이미지 생성</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="video" onchange="updateSelectedCategories()">
+                                        <span>🎬 영상 생성</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="voice" onchange="updateSelectedCategories()">
+                                        <span>🎤 음성/더빙</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="writing" onchange="updateSelectedCategories()">
+                                        <span>✍️ 문서 작성</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="automation" onchange="updateSelectedCategories()">
+                                        <span>⚡ 업무 자동화</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="coding" onchange="updateSelectedCategories()">
+                                        <span>💻 개발/코딩</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="marketing" onchange="updateSelectedCategories()">
+                                        <span>📈 마케팅/SEO</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="design" onchange="updateSelectedCategories()">
+                                        <span>🎨 디자인</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="categories" value="translation" onchange="updateSelectedCategories()">
+                                        <span>🌐 번역/언어</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" id="selectedCategories" required>
+                                <div id="categoriesPreview" style="margin-top: 12px; display: none;">
+                                    <strong style="color: #425CFF;">선택된 카테고리:</strong>
+                                    <div id="categoriesPreviewList" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    가격 타입 <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(여러 개 선택 가능)</small>
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px; background: #F7F8FA; border-radius: 12px; border: 1px solid #E4E6EB;">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="priceTypes" value="free" onchange="updateSelectedPriceTypes()">
+                                        <span>🎁 무료</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="priceTypes" value="freemium" onchange="updateSelectedPriceTypes()">
+                                        <span>🔥 무료 체험</span>
+                                    </label>
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="priceTypes" value="paid" onchange="updateSelectedPriceTypes()">
+                                        <span>💳 유료</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" id="selectedPriceTypes" required>
+                                <div id="priceTypesPreview" style="margin-top: 12px; display: none;">
+                                    <strong style="color: #425CFF;">선택된 가격:</strong>
+                                    <div id="priceTypesPreviewList" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">웹사이트 URL <span class="required">*</span></label>
+                                <input type="url" name="url" class="form-input" placeholder="https://..." required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    💰 어필리에이트 링크
+                                    <small style="color: #9199A1; font-weight: 400; margin-left: 8px;">(선택사항)</small>
+                                </label>
+                                <input type="url" name="affiliateUrl" class="form-input" placeholder="https://tool.com?ref=yourID (입력 시 우선 사용)">
+                                <small style="display: block; margin-top: 6px; color: #9199A1; font-size: 0.85rem;">
+                                    💡 제휴 프로그램 링크를 입력하면 수익을 추적할 수 있습니다. 비워두면 일반 URL 사용
+                                </small>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">짧은 설명 <span class="required">*</span></label>
+                                <textarea name="description" class="form-textarea" placeholder="한 줄로 툴을 설명해주세요" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">그라데이션 CSS</label>
+                                <input type="text" name="gradient" class="form-input" placeholder="linear-gradient(135deg, #425CFF, #5a6fff)" value="linear-gradient(135deg, #425CFF, #5a6fff)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" name="korean" style="width: 18px; height: 18px; margin-right: 8px;">
+                                    한국어 지원
+                                </label>
+                            </div>
+                            
+                            <!-- 활용 사례 이미지/영상 -->
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    📸 활용 사례 추가
+                                    <small style="color: #9199A1; font-weight: 400;">(최대 4개 권장)</small>
+                                </label>
+                                
+                                <div style="background: #F7F8FA; padding: 24px; border-radius: 12px; border: 1px solid #E4E6EB;">
+                                    <!-- 타입 선택 -->
+                                    <div style="margin-bottom: 20px;">
+                                        <label style="display: block; margin-bottom: 12px; font-weight: 600; font-size: 0.95rem; color: #0C0F14;">
+                                            타입 선택
+                                        </label>
+                                        <div style="display: flex; gap: 24px;">
+                                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                <input type="radio" name="useCaseType" value="video" checked style="width: 18px; height: 18px; cursor: pointer;">
+                                                <span style="font-weight: 500;">🎬 영상 (YouTube URL)</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                <input type="radio" name="useCaseType" value="image" style="width: 18px; height: 18px; cursor: pointer;">
+                                                <span style="font-weight: 500;">🖼️ 이미지 (파일 첨부)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 영상 URL 입력 -->
+                                    <div id="videoUrlInput" style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            YouTube URL
+                                        </label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="url" id="useCaseVideoUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=..." style="flex: 1; background: white;">
+                                            <button type="button" class="btn-add" onclick="addUseCaseVideo()">
+                                                <i class="fas fa-plus"></i> 추가
+                                            </button>
+                                        </div>
+                                        <small style="color: #9199A1; font-size: 0.85rem; display: block; margin-top: 6px;">
+                                            💡 YouTube 링크만 지원 (예: https://www.youtube.com/watch?v=xxxxx)
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- 이미지 파일 업로드 -->
+                                    <div id="imageFileInput" style="display: none; margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            이미지 파일
+                                        </label>
+                                        <div style="display: flex; gap: 8px; align-items: flex-start;">
+                                            <div style="flex: 1;">
+                                                <input type="file" id="useCaseImageFile" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" class="form-input" style="background: white; padding: 8px;">
+                                                <small style="color: #9199A1; font-size: 0.85rem; display: block; margin-top: 6px;">
+                                                    💡 PNG, JPG, GIF, WebP (최대 2MB)
+                                                </small>
+                                            </div>
+                                            <button type="button" class="btn-add" onclick="addUseCaseImage()">
+                                                <i class="fas fa-plus"></i> 추가
+                                            </button>
+                                        </div>
+                                        <!-- 미리보기 -->
+                                        <div id="useCaseImagePreview" style="margin-top: 12px; display: none;">
+                                            <img id="useCasePreviewImg" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 1px solid #E4E6EB;">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 추가된 활용 사례 목록 -->
+                                <div id="useCases" class="array-items" style="margin-top: 16px;"></div>
+                            </div>
+                            
+                            <!-- 추천 타겟 -->
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    추천 타겟
+                                    <small style="color: #9199A1; font-weight: 400;">(예: 디자이너 & 아티스트)</small>
+                                </label>
+                                <div class="array-input">
+                                    <input type="text" id="targetInput" class="form-input" placeholder="추천 타겟을 입력하세요">
+                                    <button type="button" class="btn-add" onclick="addArrayItem('targetAudience', 'targetInput')">
+                                        <i class="fas fa-plus"></i> 추가
+                                    </button>
+                                </div>
+                                <div id="targetAudience" class="array-items"></div>
+                            </div>
+                            
+                            <!-- 가격 플랜 -->
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    💰 가격 플랜 추가
+                                </label>
+                                
+                                <div style="background: #F7F8FA; padding: 24px; border-radius: 12px; border: 1px solid #E4E6EB;">
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            플랜명 <span style="color: #EF4444;">*</span>
+                                        </label>
+                                        <input type="text" id="planName" class="form-input" placeholder="예: Basic, Pro, Enterprise" style="background: white;">
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                                💳 월 구독 가격
+                                            </label>
+                                            <input type="text" id="planMonthlyPrice" class="form-input" placeholder="예: $20, ₩10,000 (비워두면 미표시)" style="background: white;">
+                                            <small style="color: #9199A1; font-size: 0.8rem;">선택사항 - 월 구독이 없으면 비워두세요</small>
+                                        </div>
+                                        
+                                        <div>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                                📅 연 구독 가격
+                                            </label>
+                                            <input type="text" id="planYearlyPrice" class="form-input" placeholder="예: $200, ₩100,000 (비워두면 미표시)" style="background: white;">
+                                            <small style="color: #9199A1; font-size: 0.8rem;">선택사항 - 연 구독이 없으면 비워두세요</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            🎁 무료/기타 가격
+                                        </label>
+                                        <input type="text" id="planOtherPrice" class="form-input" placeholder="예: 무료, 문의, 평생 $299 (선택사항)" style="background: white;">
+                                        <small style="color: #9199A1; font-size: 0.8rem;">무료 플랜, 일회성 결제, 기타 가격 정보</small>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            플랜 설명
+                                        </label>
+                                        <textarea id="planDescription" class="form-textarea" placeholder="이 플랜의 주요 특징을 설명해주세요 (선택사항)" style="background: white; min-height: 80px;"></textarea>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #0C0F14;">
+                                            플랜 기능 (여러 개 추가 가능)
+                                        </label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="planFeatureInput" class="form-input" placeholder="예: GPT-4 모델 사용" style="background: white; flex: 1;">
+                                            <button type="button" class="btn-add" onclick="addPlanFeature()">
+                                                <i class="fas fa-plus"></i> 추가
+                                            </button>
+                                        </div>
+                                        <div id="planFeatures" class="array-items" style="margin-top: 12px;"></div>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px;">
+                                        <input type="checkbox" id="planFeatured" style="width: 20px; height: 20px; cursor: pointer;">
+                                        <label for="planFeatured" style="cursor: pointer; font-weight: 600; color: #425CFF;">
+                                            ⭐ 추천 플랜으로 강조
+                                        </label>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-primary" onclick="addPricingPlan()" style="width: 100%;">
+                                        <i class="fas fa-plus-circle"></i> 가격 플랜 추가
+                                    </button>
+                                </div>
+                                
+                                <!-- 추가된 플랜 목록 -->
+                                <div id="pricingPlans" style="margin-top: 16px;"></div>
+                            </div>
+                            
+                            <!-- 유사 툴 ID -->
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    유사 툴 ID
+                                    <small style="color: #9199A1; font-weight: 400;">(다른 툴의 ID를 입력)</small>
+                                </label>
+                                <div class="array-input">
+                                    <input type="text" id="similarInput" class="form-input" placeholder="예: chatgpt, claude">
+                                    <button type="button" class="btn-add" onclick="addArrayItem('similarTools', 'similarInput')">
+                                        <i class="fas fa-plus"></i> 추가
+                                    </button>
+                                </div>
+                                <div id="similarTools" class="array-items"></div>
+                            </div>
+                            
+                            <!-- 주요 기능 -->
+                            <div class="form-group full-width">
+                                <label class="form-label">주요 기능</label>
+                                <div class="array-input">
+                                    <input type="text" id="featureInput" class="form-input" placeholder="기능을 입력하세요">
+                                    <button type="button" class="btn-add" onclick="addArrayItem('features', 'featureInput')">
+                                        <i class="fas fa-plus"></i> 추가
+                                    </button>
+                                </div>
+                                <div id="features" class="array-items"></div>
+                            </div>
+                            
+                            <!-- 상태 -->
+                            <div class="form-group">
+                                <label class="form-label">상태</label>
+                                <select name="status" class="form-select">
+                                    <option value="active">활성</option>
+                                    <option value="draft">임시저장</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 40px; display: flex; gap: 12px; justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('addToolForm').reset(); clearArrayItems();">
+                                <i class="fas fa-redo"></i> 초기화
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> 저장하기
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- List Tools Section -->
+        <section id="list" class="admin-section">
+            <div class="card">
+                <div class="card-body" style="padding: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 style="margin: 0;">
+                            <i class="fas fa-list"></i> 등록된 AI 툴
+                        </h2>
+                        <button class="btn btn-primary" onclick="loadTools()">
+                            <i class="fas fa-sync-alt"></i> 새로고침
+                        </button>
+                    </div>
+                    
+                    <div id="toolsList"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Settings Section -->
+        <section id="settings" class="admin-section">
+            <div class="card" style="max-width: 900px; margin: 0 auto;">
+                <div class="card-body" style="padding: 40px;">
+                    <h2 style="margin-bottom: 32px;">
+                        <i class="fas fa-cog"></i> 시스템 설정
+                    </h2>
+                    
+                    <!-- Firebase 설정 -->
+                    <div style="margin-bottom: 48px;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px;">
+                            <i class="fab fa-google" style="color: #4285F4;"></i> Firebase 인증 설정
+                        </h3>
+                        <p style="color: #5F6369; margin-bottom: 24px; font-size: 0.95rem;">
+                            Google 로그인 및 Firebase 인증을 사용하려면 Firebase 프로젝트 설정이 필요합니다.
+                            <a href="https://console.firebase.google.com/" target="_blank" style="color: #425CFF;">Firebase Console</a>에서 설정 정보를 확인하세요.
+                        </p>
+                        
+                        <form id="firebaseConfigForm">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    API Key <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)</small>
+                                </label>
+                                <input type="text" id="firebaseApiKey" class="form-input" placeholder="Firebase API Key를 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Auth Domain <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: your-project.firebaseapp.com)</small>
+                                </label>
+                                <input type="text" id="firebaseAuthDomain" class="form-input" placeholder="Auth Domain을 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Project ID <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: your-project-id)</small>
+                                </label>
+                                <input type="text" id="firebaseProjectId" class="form-input" placeholder="Project ID를 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Storage Bucket <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: your-project.appspot.com)</small>
+                                </label>
+                                <input type="text" id="firebaseStorageBucket" class="form-input" placeholder="Storage Bucket을 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Messaging Sender ID <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: 123456789012)</small>
+                                </label>
+                                <input type="text" id="firebaseMessagingSenderId" class="form-input" placeholder="Messaging Sender ID를 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    App ID <span class="required">*</span>
+                                    <small style="color: #9199A1; font-weight: 400;">(예: 1:123456789012:web:abcdefghijklmnop)</small>
+                                </label>
+                                <input type="text" id="firebaseAppId" class="form-input" placeholder="App ID를 입력하세요">
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 32px;">
+                                <button type="button" class="btn btn-primary" onclick="saveFirebaseConfig()">
+                                    <i class="fas fa-save"></i> Firebase 설정 저장
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="testFirebaseConnection()">
+                                    <i class="fas fa-plug"></i> 연결 테스트
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="loadFirebaseConfig()">
+                                    <i class="fas fa-sync-alt"></i> 설정 불러오기
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="firebaseStatus" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none;">
+                            <!-- Status message will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <!-- 소셜 로그인 API 키 -->
+                    <div style="margin-bottom: 48px; padding-top: 32px; border-top: 2px solid #E4E6EB;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px;">
+                            <i class="fas fa-key" style="color: #10B981;"></i> 소셜 로그인 API 키
+                        </h3>
+                        <p style="color: #5F6369; margin-bottom: 24px; font-size: 0.95rem;">
+                            네이버, 카카오 소셜 로그인을 사용하려면 각 플랫폼의 API 키가 필요합니다.
+                        </p>
+                        
+                        <form id="socialApiForm">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%2303C75A' d='M13.5 10.5L6.5 0H0V20H6.5V9.5L13.5 20H20V0H13.5V10.5Z'/%3E%3C/svg%3E" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
+                                    네이버 Client ID
+                                    <small style="color: #9199A1; font-weight: 400;">(선택사항)</small>
+                                </label>
+                                <input type="text" id="naverClientId" class="form-input" placeholder="네이버 Client ID를 입력하세요">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span style="display: inline-block; width: 20px; height: 20px; background: #FEE500; border-radius: 4px; text-align: center; line-height: 20px; margin-right: 8px; vertical-align: middle;">K</span>
+                                    카카오 JavaScript Key
+                                    <small style="color: #9199A1; font-weight: 400;">(선택사항)</small>
+                                </label>
+                                <input type="text" id="kakaoJsKey" class="form-input" placeholder="카카오 JavaScript Key를 입력하세요">
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 32px;">
+                                <button type="button" class="btn btn-primary" onclick="saveSocialApiKeys()">
+                                    <i class="fas fa-save"></i> API 키 저장
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="loadSocialApiKeys()">
+                                    <i class="fas fa-sync-alt"></i> 설정 불러오기
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="socialApiStatus" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none;">
+                            <!-- Status message will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <!-- 설정 안내 -->
+                    <div style="padding: 24px; background: #F8F9FF; border-radius: 12px; border-left: 4px solid #425CFF;">
+                        <h4 style="font-size: 1rem; margin-bottom: 12px; color: #425CFF;">
+                            <i class="fas fa-info-circle"></i> 설정 가이드
+                        </h4>
+                        <ul style="margin: 0; padding-left: 20px; color: #5F6369; font-size: 0.9rem; line-height: 1.8;">
+                            <li><strong>Firebase 설정</strong>: <a href="FIREBASE_SETUP_GUIDE.md" target="_blank" style="color: #425CFF;">Firebase 설정 가이드</a>를 참고하세요</li>
+                            <li><strong>네이버 로그인</strong>: <a href="https://developers.naver.com/" target="_blank" style="color: #425CFF;">네이버 개발자 센터</a>에서 애플리케이션 등록</li>
+                            <li><strong>카카오 로그인</strong>: <a href="https://developers.kakao.com/" target="_blank" style="color: #425CFF;">Kakao Developers</a>에서 애플리케이션 추가</li>
+                            <li>설정은 브라우저의 <strong>localStorage</strong>에 저장됩니다</li>
+                            <li>설정 저장 후 <strong>페이지를 새로고침</strong>하면 적용됩니다</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>
