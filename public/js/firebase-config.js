@@ -29,12 +29,12 @@ function loadFirebaseConfigFromStorage() {
     
     // 기본 설정 (수동으로 입력한 경우)
     return {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyBXJZ1xXxXxXxXxXxXxXxXxXxXxXxX",
+        authDomain: "modutool-4179c.firebaseapp.com",
+        projectId: "modutool-4179c",
+        storageBucket: "modutool-4179c.firebasestorage.app",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:abcdef1234567890abcdef"
     };
 }
 
@@ -43,11 +43,19 @@ const firebaseConfig = loadFirebaseConfigFromStorage();
 
 // Firebase 초기화
 let app, auth;
+let firebaseInitialized = false;
 
 try {
     // 설정 유효성 검사
-    if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY") {
-        console.warn('⚠️ Firebase 설정이 필요합니다. 관리자 페이지의 "설정" 탭에서 Firebase 설정을 입력하세요.');
+    if (!firebaseConfig.apiKey || 
+        firebaseConfig.apiKey === "YOUR_API_KEY" || 
+        firebaseConfig.apiKey.includes("XxXxXx")) {
+        console.warn('⚠️ Firebase 설정이 필요합니다.');
+        console.warn('💡 해결 방법:');
+        console.warn('   1. Firebase Console (https://console.firebase.google.com/) 접속');
+        console.warn('   2. 프로젝트 "modutool-4179c" 선택');
+        console.warn('   3. 프로젝트 설정 > 내 앱 > SDK 설정 복사');
+        console.warn('   4. admin.html의 "설정" 탭에서 Firebase 설정 입력');
         throw new Error('Firebase 설정이 완료되지 않았습니다.');
     }
     
@@ -60,11 +68,23 @@ try {
     // 한국어로 설정
     auth.languageCode = 'ko';
     
+    firebaseInitialized = true;
     console.log('✅ Firebase 초기화 성공');
     console.log('📌 Project ID:', firebaseConfig.projectId);
 } catch (error) {
-    console.error('❌ Firebase 초기화 실패:', error);
-    console.error('💡 해결 방법: admin.html의 "설정" 탭에서 Firebase 설정을 입력하세요.');
+    console.error('❌ Firebase 초기화 실패:', error.message);
+    
+    // Firebase가 초기화되지 않았어도 기본 auth 객체 생성 (에러 방지)
+    auth = {
+        onAuthStateChanged: (callback) => {
+            // 로그인되지 않은 상태로 callback 호출
+            setTimeout(() => callback(null), 0);
+            return () => {}; // unsubscribe 함수
+        },
+        currentUser: null,
+        signOut: () => Promise.reject(new Error('Firebase가 초기화되지 않았습니다.')),
+        languageCode: 'ko'
+    };
 }
 
 // ========================================

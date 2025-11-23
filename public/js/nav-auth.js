@@ -70,11 +70,25 @@ function updateAuthUI(user) {
 }
 
 // 페이지 로드 시 인증 상태 확인
-if (typeof firebase !== 'undefined' && window.firebaseAuth) {
-    window.firebaseAuth.auth.onAuthStateChanged((user) => {
-        updateAuthUI(user);
-    });
-}
+document.addEventListener('DOMContentLoaded', () => {
+    // Firebase가 로드될 때까지 대기
+    const waitForFirebase = setInterval(() => {
+        if (typeof firebase !== 'undefined' && window.firebaseAuth) {
+            clearInterval(waitForFirebase);
+            window.firebaseAuth.auth.onAuthStateChanged((user) => {
+                updateAuthUI(user);
+            });
+        }
+    }, 100);
+    
+    // 5초 후에도 Firebase가 로드되지 않으면 로그아웃 상태로 표시
+    setTimeout(() => {
+        clearInterval(waitForFirebase);
+        if (!window.firebaseAuth || !window.firebaseAuth.auth.currentUser) {
+            updateAuthUI(null);
+        }
+    }, 5000);
+});
 
 // CSS 스타일 추가
 const style = document.createElement('style');
